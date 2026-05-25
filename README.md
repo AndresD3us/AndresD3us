@@ -4,7 +4,7 @@
 
 **`19 y/o · Estudiante de Ing. en Sistemas · Apasionado del código`**
 
-[![Typing SVG]([https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&pause=1000&color=00D9FF&center=true&vCenter=true&width=435&lines=Estudiante+de+Ing.+en+Sistemas+%F0%9F%8E%93;Amante+del+desarrollo+web+%F0%9F%8C%90;Siempre+aprendiendo%2C+nunca+parando+%F0%9F%9A%80;from+Colombia+with+%E2%9D%A4%EF%B8%8F)](https://git.io/typing-svg](https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&pause=1000&color=00D9FF&center=true&vCenter=true&width=500&lines=Primero+el+dinero,+después+el+poder+💸;Código+frío,+mente+fría+💻;No+sigo+tendencias,+las+creo+⚡;Construyendo+mi+imperio+línea+por+línea+🚀;from+Colombia+with+ambition+🇨🇴)](https://git.io/typing-svg))
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&size=18&pause=1000&color=00D9FF&center=true&vCenter=true&width=500&lines=Primero+el+dinero,+después+el+poder+💸;Código+frío,+mente+fría+💻;No+sigo+tendencias,+las+creo+⚡;Construyendo+mi+imperio+línea+por+línea+🚀;from+Colombia+with+ambition+🇨🇴)](https://git.io/typing-svg)
 
 </div>
 
