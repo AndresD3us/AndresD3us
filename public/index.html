@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AndresD3us — Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --dark: #111111;
+      --card: #161616;
+      --border: #222222;
+      --gold: #c9a84c;
+      --gold-light: #e6c97a;
+      --white: #f0ece4;
+      --grey: #888;
+      --red: #b03030;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* GRAIN OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 4rem;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+      backdrop-filter: blur(2px);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+    }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--grey);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      gap: 4rem;
+      position: relative;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 50%;
+      background: radial-gradient(ellipse at center right, rgba(201,168,76,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-text { position: relative; z-index: 2; }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 8vw, 8rem);
+      line-height: 0.9;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero-name span { color: var(--gold); }
+
+    .hero-tagline {
+      margin-top: 2rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--grey);
+      max-width: 480px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2.2rem;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--black);
+      font-weight: 600;
+    }
+    .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* HERO IMAGE */
+    .hero-image-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeIn 1.2s 0.3s forwards;
+    }
+
+    .hero-image-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, var(--gold) 0%, transparent 50%, var(--gold) 100%);
+      border-radius: 2px;
+      z-index: 0;
+    }
+
+    .hero-image-wrap::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 20px;
+      right: -20px;
+      height: 100%;
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 2px;
+      z-index: -1;
+    }
+
+    .hero-img {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 4/5;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      position: relative;
+      z-index: 1;
+      filter: grayscale(20%) contrast(1.1);
+    }
+
+    .hero-github {
+      position: absolute;
+      bottom: -3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--grey);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      white-space: nowrap;
+    }
+    .hero-github:hover { color: var(--gold); }
+    .hero-github svg { width: 18px; height: 18px; fill: currentColor; }
+
+    /* SECTION BASE */
+    section { padding: 6rem 4rem; }
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      margin-bottom: 3rem;
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--border), transparent);
+      margin: 0 4rem;
+    }
+
+    /* SKILLS */
+    #skills { background: var(--dark); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+    }
+
+    .skill-card {
+      background: var(--card);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    .skill-card:hover { background: #1a1a1a; }
+    .skill-card:hover::before { transform: scaleX(1); }
+
+    .skill-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .skill-name {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+    }
+
+    .project-card {
+      background: var(--card);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--gold);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.4s;
+    }
+    .project-card:hover { background: #151515; }
+    .project-card:hover::after { transform: scaleY(1); }
+
+    .project-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .project-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+    .project-desc {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--grey);
+      margin-bottom: 1.5rem;
+    }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--border);
+      color: var(--grey);
+    }
+
+    /* ABOUT */
+    #about { background: var(--dark); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .about-text p {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: var(--grey);
+      margin-bottom: 1.5rem;
+    }
+    .about-text p strong { color: var(--white); font-weight: 600; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      border: 1px solid var(--border);
+    }
+    .stat-box {
+      background: var(--card);
+      padding: 2rem;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-top: 0.5rem;
+    }
+
+    /* REVIEWS */
+    #reviews { background: var(--black); }
+
+    .reviews-avg {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .avg-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .avg-stars { font-size: 1.4rem; color: var(--gold); }
+    .avg-count { font-size: 0.8rem; color: var(--grey); letter-spacing: 0.1em; }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+      margin-bottom: 4rem;
+    }
+
+    .review-card {
+      background: var(--card);
+      padding: 2rem;
+    }
+    .review-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; }
+    .review-comment {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--grey);
+      margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+    .review-author {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .review-date {
+      font-size: 0.65rem;
+      color: #555;
+      margin-top: 0.2rem;
+    }
+
+    .no-reviews {
+      text-align: center;
+      color: var(--grey);
+      padding: 4rem;
+      font-style: italic;
+      background: var(--card);
+      border: 1px solid var(--border);
+      margin-bottom: 4rem;
+    }
+
+    /* REVIEW FORM */
+    .review-form-wrap {
+      max-width: 600px;
+    }
+    .form-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 2rem;
+    }
+
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 0.6rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 1rem 1.2rem;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.3s;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+
+    .star-rating { display: flex; gap: 0.5rem; flex-direction: row-reverse; justify-content: flex-end; }
+    .star-rating input { display: none; }
+    .star-rating label {
+      font-size: 2rem;
+      color: var(--border);
+      cursor: pointer;
+      transition: color 0.2s;
+      letter-spacing: 0;
+    }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label,
+    .star-rating input:checked ~ label { color: var(--gold); }
+
+    .form-msg {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      padding: 0.8rem 1rem;
+      display: none;
+    }
+    .form-msg.success { background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+    .form-msg.error { background: rgba(176,48,48,0.1); color: #e05555; border: 1px solid rgba(176,48,48,0.3); }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      padding: 3rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--grey);
+      letter-spacing: 0.1em;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; gap: 3rem; }
+      .hero-image-wrap { order: -1; }
+      .hero-img { max-width: 280px; }
+      section { padding: 4rem 1.5rem; }
+      .divider { margin: 0 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      footer { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AndresD3us</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Proyectos</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <p class="hero-eyebrow">— Desarrollador Web</p>
+    <h1 class="hero-name">Andres<br /><span>D3us</span></h1>
+    <p class="hero-tagline">
+      Construyo experiencias web que van más allá del código. Apasionado por el desarrollo, el diseño y crear cosas que importen.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-gold">Ver Proyectos</a>
+      <a href="https://github.com/AndresD3us" target="_blank" class="btn btn-outline">GitHub</a>
+    </div>
+  </div>
+  <div class="hero-image-wrap">
+    <img src="/img/profile.jpg" alt="AndresD3us" class="hero-img" />
+    <a href="https://github.com/AndresD3us" target="_blank" class="hero-github">
+      <svg viewBox="0 0 24 24"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.31 3.435 9.817 8.205 11.407.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.469-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.51 11.51 0 0 1 12 6.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.625-5.479 5.921.43.372.823 1.102.823 2.222 0 1.605-.015 2.899-.015 3.293 0 .319.218.694.825.576C20.565 22.312 24 17.811 24 12.5c0-6.63-5.37-12-12-12z"/></svg>
+      @AndresD3us
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-label">Tecnologías</p>
+  <h2 class="section-title">Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-card"><div class="skill-icon">🌐</div><div class="skill-name">HTML</div></div>
+    <div class="skill-card"><div class="skill-icon">🎨</div><div class="skill-name">CSS</div></div>
+    <div class="skill-card"><div class="skill-icon">⚡</div><div class="skill-name">JavaScript</div></div>
+    <div class="skill-card"><div class="skill-icon">🟢</div><div class="skill-name">Node.js</div></div>
+    <div class="skill-card"><div class="skill-icon">🐍</div><div class="skill-name">Python</div></div>
+    <div class="skill-card"><div class="skill-icon">🐘</div><div class="skill-name">PHP</div></div>
+    <div class="skill-card"><div class="skill-icon">🗄️</div><div class="skill-name">MySQL</div></div>
+    <div class="skill-card"><div class="skill-icon">🐙</div><div class="skill-name">Git</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">Portafolio</p>
+  <h2 class="section-title">Proyectos</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-num">01</div>
+      <h3 class="project-title">Bot Discord</h3>
+      <p class="project-desc">Bot multifuncional para Discord construido en Python con comandos personalizados, sistema de economía y moderación automatizada.</p>
+      <div class="project-tags"><span class="tag">Python</span><span class="tag">Discord.py</span><span class="tag">API</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-num">02</div>
+      <h3 class="project-title">Web Portfolio</h3>
+      <p class="project-desc">Sitio web personal full-stack con Node.js, Express y vanilla JS. Diseño custom, sistema de reviews en tiempo real.</p>
+      <div class="project-tags"><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">JS</span></div>
+    </div>
+    <div class="project-card">
+      <div class="project-num">03</div>
+      <h3 class="project-title">Plugin PocketMine</h3>
+      <p class="project-desc">Plugin de economía con funciones avanzadas para servidores Minecraft Bedrock. Desarrollado completamente en PHP.</p>
+      <div class="project-tags"><span class="tag">PHP</span><span class="tag">PocketMine</span><span class="tag">Minecraft</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <p class="section-label">Sobre mí</p>
+  <h2 class="section-title">About</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>Soy <strong>AndresD3us</strong>, desarrollador web apasionado por construir cosas reales con código. Llevo tiempo en este mundo y cada proyecto me enseña algo nuevo.</p>
+      <p>Me muevo entre el <strong>frontend y el backend</strong>, trabajo con Node.js, Python y PHP. Me gusta que las cosas funcionen bien y se vean mejor.</p>
+      <p>Cuando no estoy construyendo, estoy aprendiendo. Siempre hay algo nuevo que explorar — nuevas herramientas, frameworks, ideas.</p>
+      <a href="https://github.com/AndresD3us" target="_blank" class="btn btn-gold" style="margin-top:1rem;">Ver GitHub</a>
+    </div>
+    <div class="about-stats">
+      <div class="stat-box">
+        <div class="stat-num" id="stat-projects">3+</div>
+        <div class="stat-label">Proyectos</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="stat-tech">8+</div>
+        <div class="stat-label">Tecnologías</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="stat-reviews-count">—</div>
+        <div class="stat-label">Reviews</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" id="stat-avg-score">—</div>
+        <div class="stat-label">Calificación</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <p class="section-label">Clientes</p>
+  <h2 class="section-title">Reviews</h2>
+
+  <div class="reviews-avg" id="avg-display" style="display:none;">
+    <div class="avg-num" id="avg-num">5.0</div>
+    <div>
+      <div class="avg-stars" id="avg-stars">★★★★★</div>
+      <div class="avg-count" id="avg-count">0 reseñas</div>
+    </div>
+  </div>
+
+  <div id="reviews-container">
+    <div class="no-reviews">Aún no hay reseñas. ¡Sé el primero en calificar!</div>
+  </div>
+
+  <!-- FORM -->
+  <div class="review-form-wrap">
+    <h3 class="form-title">Deja tu Reseña</h3>
+    <div class="form-group">
+      <label>Tu nombre</label>
+      <input type="text" id="inp-name" placeholder="Ej: Carlos M." maxlength="50" />
+    </div>
+    <div class="form-group">
+      <label>Calificación</label>
+      <div class="star-rating">
+        <input type="radio" name="rating" id="s5" value="5"><label for="s5">★</label>
+        <input type="radio" name="rating" id="s4" value="4"><label for="s4">★</label>
+        <input type="radio" name="rating" id="s3" value="3"><label for="s3">★</label>
+        <input type="radio" name="rating" id="s2" value="2"><label for="s2">★</label>
+        <input type="radio" name="rating" id="s1" value="1"><label for="s1">★</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Comentario</label>
+      <textarea id="inp-comment" rows="4" placeholder="Cuéntanos tu experiencia..." maxlength="300"></textarea>
+    </div>
+    <button class="btn btn-gold" onclick="submitReview()">Publicar Reseña</button>
+    <div class="form-msg" id="form-msg"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AndresD3us</div>
+  <div class="footer-copy">© 2025 AndresD3us · Todos los derechos reservados</div>
+</footer>
+
+<script>
+  let allReviews = [];
+
+  function starsHTML(n) {
+    return '★'.repeat(n) + '☆'.repeat(5 - n);
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  async function loadReviews() {
+    try {
+      const res = await fetch('/api/reviews');
+      allReviews = await res.json();
+      renderReviews();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function renderReviews() {
+    const container = document.getElementById('reviews-container');
+    const avgDisplay = document.getElementById('avg-display');
+    const statCount = document.getElementById('stat-reviews-count');
+    const statAvg = document.getElementById('stat-avg-score');
+
+    statCount.textContent = allReviews.length;
+
+    if (allReviews.length === 0) {
+      container.innerHTML = '<div class="no-reviews">Aún no hay reseñas. ¡Sé el primero en calificar!</div>';
+      avgDisplay.style.display = 'none';
+      statAvg.textContent = '—';
+      return;
+    }
+
+    const avg = allReviews.reduce((a, r) => a + r.rating, 0) / allReviews.length;
+    const avgRounded = Math.round(avg * 10) / 10;
+
+    document.getElementById('avg-num').textContent = avgRounded.toFixed(1);
+    document.getElementById('avg-stars').textContent = starsHTML(Math.round(avg));
+    document.getElementById('avg-count').textContent = `${allReviews.length} reseña${allReviews.length !== 1 ? 's' : ''}`;
+    avgDisplay.style.display = 'flex';
+    statAvg.textContent = avgRounded.toFixed(1);
+
+    const grid = document.createElement('div');
+    grid.className = 'reviews-grid';
+    allReviews.forEach(r => {
+      grid.innerHTML += `
+        <div class="review-card">
+          <div class="review-stars">${starsHTML(r.rating)}</div>
+          <p class="review-comment">"${r.comment}"</p>
+          <div class="review-author">${r.name}</div>
+          <div class="review-date">${formatDate(r.date)}</div>
+        </div>`;
+    });
+    container.innerHTML = '';
+    container.appendChild(grid);
+  }
+
+  async function submitReview() {
+    const name = document.getElementById('inp-name').value.trim();
+    const comment = document.getElementById('inp-comment').value.trim();
+    const ratingEl = document.querySelector('input[name="rating"]:checked');
+    const msg = document.getElementById('form-msg');
+
+    if (!name || !comment || !ratingEl) {
+      showMsg('Por favor completa todos los campos y selecciona una calificación.', 'error');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, rating: parseInt(ratingEl.value), comment })
+      });
+      if (!res.ok) throw new Error();
+      showMsg('¡Reseña publicada con éxito! Gracias por tu feedback.', 'success');
+      document.getElementById('inp-name').value = '';
+      document.getElementById('inp-comment').value = '';
+      if (ratingEl) ratingEl.checked = false;
+      loadReviews();
+    } catch {
+      showMsg('Error al enviar la reseña. Intenta de nuevo.', 'error');
+    }
+  }
+
+  function showMsg(text, type) {
+    const msg = document.getElementById('form-msg');
+    msg.textContent = text;
+    msg.className = 'form-msg ' + type;
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 4000);
+  }
+
+  loadReviews();
+</script>
+</body>
+</html>

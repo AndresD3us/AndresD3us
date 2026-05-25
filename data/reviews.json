@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1779744404975,
+    "name": "Miguel R.",
+    "rating": 4,
+    "comment": "Buen trabajo, rápido y eficiente. Definitivamente volvería a contratar sus servicios.",
+    "date": "2026-05-25T21:26:44.975Z"
+  },
+  {
+    "id": 1779744404967,
+    "name": "Laura G.",
+    "rating": 5,
+    "comment": "Lo recomiendo al 100%. Cumplió con todo y el resultado fue increíble.",
+    "date": "2026-05-25T21:26:44.967Z"
+  },
+  {
+    "id": 1779744404954,
+    "name": "Carlos M.",
+    "rating": 5,
+    "comment": "Excelente trabajo, muy profesional y entregó todo a tiempo. El sitio quedó espectacular.",
+    "date": "2026-05-25T21:26:44.954Z"
+  }
+]
