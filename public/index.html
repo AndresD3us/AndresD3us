@@ -10,12 +10,12 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:      #f8f7f4;
-      --surface: #f0ede8;
-      --line:    #e0dbd3;
-      --ink:     #1a1814;
-      --mid:     #8a8580;
-      --dim:     #b8b3ac;
+      --bg:      #1c1c1c;
+      --surface: #242424;
+      --line:    #323232;
+      --ink:     #e8e6e2;
+      --mid:     #7a7874;
+      --dim:     #4a4846;
       --mono:    'DM Mono', monospace;
     }
 
@@ -37,7 +37,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 1.8rem 4rem;
-      background: rgba(248,247,244,0.92);
+      background: rgba(28,28,28,0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid transparent;
       transition: border-color 0.3s, padding 0.3s;
@@ -54,7 +54,7 @@
     }
     .nav-logo span { color: var(--mid); }
 
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
     .nav-links a {
       color: var(--mid);
       text-decoration: none;
@@ -63,6 +63,32 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--ink); }
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+    .lang-btn {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      padding: 0.35rem 0.7rem;
+      background: transparent;
+      border: none;
+      color: var(--dim);
+      cursor: pointer;
+      transition: all 0.18s;
+      text-transform: uppercase;
+    }
+    .lang-btn.active {
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .lang-btn:not(.active):hover { color: var(--ink); }
 
     .hero {
       min-height: 100vh;
@@ -129,7 +155,7 @@
       font-weight: 400;
     }
     .btn-solid { background: var(--ink); color: var(--bg); }
-    .btn-solid:hover { background: #2d2a25; }
+    .btn-solid:hover { background: #ccc9c4; }
     .btn-ghost {
       background: transparent;
       color: var(--mid);
@@ -149,10 +175,10 @@
       object-fit: cover;
       object-position: center top;
       display: block;
-      filter: grayscale(100%) contrast(1.05);
+      filter: grayscale(100%) brightness(0.85) contrast(1.05);
       transition: filter 0.4s;
     }
-    .hero-img:hover { filter: grayscale(60%) contrast(1.05); }
+    .hero-img:hover { filter: grayscale(50%) brightness(0.9) contrast(1.05); }
 
     .hero-social {
       margin-top: 1.5rem;
@@ -333,11 +359,11 @@
     .star-rating input:checked ~ label { color: var(--ink); }
 
     .form-msg { margin-top: 1rem; font-family: var(--mono); font-size: 0.78rem; padding: 0.75rem 1rem; display: none; }
-    .form-msg.success { background: #eef5ee; color: #3a6b3a; border: 1px solid #c3dbc3; }
-    .form-msg.error { background: #fdf0f0; color: #883030; border: 1px solid #e8c8c8; }
+    .form-msg.success { background: #1a2e1a; color: #7abf7a; border: 1px solid #2d4d2d; }
+    .form-msg.error { background: #2e1a1a; color: #bf7a7a; border: 1px solid #4d2d2d; }
 
     footer {
-      background: var(--ink);
+      background: #141414;
       color: var(--dim);
       padding: 3rem 4rem;
       display: flex;
@@ -346,7 +372,7 @@
       flex-wrap: wrap;
       gap: 1rem;
     }
-    .footer-logo { font-family: var(--mono); font-size: 0.85rem; color: var(--bg); }
+    .footer-logo { font-family: var(--mono); font-size: 0.85rem; color: var(--ink); }
     .footer-copy { font-family: var(--mono); font-size: 0.7rem; opacity: 0.5; }
 
     @keyframes fadeUp {
@@ -385,22 +411,28 @@
 <nav id="navbar">
   <a href="#home" class="nav-logo">Andres<span>D3us</span></a>
   <ul class="nav-links">
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Proyectos</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+    <li><a href="#projects" data-i18n="nav.projects">Proyectos</a></li>
+    <li><a href="#about" data-i18n="nav.about">About</a></li>
+    <li><a href="#reviews" data-i18n="nav.reviews">Reviews</a></li>
+    <li>
+      <div class="lang-toggle">
+        <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+      </div>
+    </li>
   </ul>
 </nav>
 
 <section class="hero" id="home">
   <div class="hero-text">
-    <p class="hero-eyebrow">Desarrollador Web &amp; Fullstack</p>
+    <p class="hero-eyebrow" data-i18n="hero.eyebrow">Desarrollador Web &amp; Fullstack</p>
     <h1 class="hero-name">Andres<br /><em>D3us</em></h1>
-    <p class="hero-tagline">
+    <p class="hero-tagline" data-i18n="hero.tagline">
       Construyo experiencias web que van más allá del código. Apasionado por el desarrollo, el diseño y crear cosas que importen.
     </p>
     <div class="hero-cta">
-      <a href="#projects" class="btn btn-solid">Ver Proyectos</a>
+      <a href="#projects" class="btn btn-solid" data-i18n="hero.cta.projects">Ver Proyectos</a>
       <a href="https://github.com/AndresD3us" target="_blank" class="btn btn-ghost">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.31 3.435 9.817 8.205 11.407.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.469-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.51 11.51 0 0 1 12 6.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.625-5.479 5.921.43.372.823 1.102.823 2.222 0 1.605-.015 2.899-.015 3.293 0 .319.218.694.825.576C20.565 22.312 24 17.811 24 12.5c0-6.63-5.37-12-12-12z"/></svg>
         GitHub
@@ -421,7 +453,7 @@
 <section id="skills" class="reveal">
   <div class="section-meta">
     <span class="section-num">01</span>
-    <span class="section-label">Tecnologías</span>
+    <span class="section-label" data-i18n="skills.label">Tecnologías</span>
     <div class="section-line"></div>
   </div>
   <h2 class="section-title">Skills &amp; <em>Stack</em></h2>
@@ -482,31 +514,31 @@
 <section id="projects" class="reveal">
   <div class="section-meta">
     <span class="section-num">02</span>
-    <span class="section-label">Portafolio</span>
+    <span class="section-label" data-i18n="projects.label">Portafolio</span>
     <div class="section-line"></div>
   </div>
-  <h2 class="section-title"><em>Proyectos</em> recientes</h2>
+  <h2 class="section-title"><em data-i18n="projects.title.em">Proyectos</em> <span data-i18n="projects.title.suffix">recientes</span></h2>
   <div class="projects-grid">
     <div class="project-card">
       <div class="project-num">01 / 03</div>
-      <h3 class="project-title">Bot Discord</h3>
-      <p class="project-desc">Bot multifuncional para Discord construido en Python con comandos personalizados, sistema de economía y moderación automatizada.</p>
+      <h3 class="project-title">OticBot</h3>
+      <p class="project-desc" data-i18n="projects.oticbot.desc">Bot multifuncional para Discord construido en Python con comandos personalizados, sistema de economía y moderación automatizada.</p>
       <div class="project-tags">
         <span class="tag">Python</span><span class="tag">Discord.py</span><span class="tag">API</span>
       </div>
     </div>
     <div class="project-card">
       <div class="project-num">02 / 03</div>
-      <h3 class="project-title">Web Portfolio</h3>
-      <p class="project-desc">Sitio web personal full-stack con Node.js, Express y vanilla JS. Diseño custom, sistema de reviews en tiempo real.</p>
+      <h3 class="project-title">App Distribuidora</h3>
+      <p class="project-desc" data-i18n="projects.distribuidora.desc">Aplicación de gestión para una distribuidora de gaseosas. Incluye módulo de contabilidad, sistema de pedidos y control de ventas en tiempo real.</p>
       <div class="project-tags">
-        <span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">JavaScript</span>
+        <span class="tag">Node.js</span><span class="tag">Android Studio</span><span class="tag">Supabase</span>
       </div>
     </div>
     <div class="project-card">
       <div class="project-num">03 / 03</div>
-      <h3 class="project-title">Plugin PocketMine</h3>
-      <p class="project-desc">Plugin de economía con funciones avanzadas para servidores Minecraft Bedrock. Desarrollado completamente en PHP.</p>
+      <h3 class="project-title">Neptune Network</h3>
+      <p class="project-desc" data-i18n="projects.neptune.desc">Neptune Network is an HCF server on Minecraft Bedrock where I'm the owner and lead developer. The project relies entirely on me, which has helped me grow a lot as a developer.</p>
       <div class="project-tags">
         <span class="tag">PHP</span><span class="tag">PocketMine</span><span class="tag">Minecraft</span>
       </div>
@@ -519,16 +551,16 @@
 <section id="about" class="reveal">
   <div class="section-meta">
     <span class="section-num">03</span>
-    <span class="section-label">Sobre mí</span>
+    <span class="section-label" data-i18n="about.label">Sobre mí</span>
     <div class="section-line"></div>
   </div>
   <h2 class="section-title">About <em>me</em></h2>
   <div class="about-grid">
     <div class="about-text">
-      <p>Soy <strong>AndresD3us</strong>, desarrollador web apasionado por construir cosas reales con código. Llevo tiempo en este mundo y cada proyecto me enseña algo nuevo.</p>
-      <p>Me muevo entre el <strong>frontend y el backend</strong>, trabajo con Node.js, Python y PHP. Me gusta que las cosas funcionen bien y se vean mejor.</p>
-      <p>Cuando no estoy construyendo, estoy aprendiendo. Siempre hay algo nuevo que explorar — nuevas herramientas, frameworks, ideas.</p>
-      <a href="https://github.com/AndresD3us" target="_blank" class="btn btn-solid" style="margin-top:1.5rem;">
+      <p data-i18n="about.p1">Soy <strong>AndresD3us</strong>, desarrollador web apasionado por construir cosas reales con código. Llevo tiempo en este mundo y cada proyecto me enseña algo nuevo.</p>
+      <p data-i18n="about.p2">Me muevo entre el <strong>frontend y el backend</strong>, trabajo con Node.js, Python y PHP. Me gusta que las cosas funcionen bien y se vean mejor.</p>
+      <p data-i18n="about.p3">Cuando no estoy construyendo, estoy aprendiendo. Siempre hay algo nuevo que explorar — nuevas herramientas, frameworks, ideas.</p>
+      <a href="https://github.com/AndresD3us" target="_blank" class="btn btn-solid" style="margin-top:1.5rem;" data-i18n="about.github">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.31 3.435 9.817 8.205 11.407.6.111.82-.261.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.469-2.38 1.235-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.51 11.51 0 0 1 12 6.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.625-5.479 5.921.43.372.823 1.102.823 2.222 0 1.605-.015 2.899-.015 3.293 0 .319.218.694.825.576C20.565 22.312 24 17.811 24 12.5c0-6.63-5.37-12-12-12z"/></svg>
         Ver GitHub
       </a>
@@ -537,19 +569,19 @@
       <div class="about-stats">
         <div class="stat-box">
           <div class="stat-num">3+</div>
-          <div class="stat-label">Proyectos</div>
+          <div class="stat-label" data-i18n="about.stat.projects">Proyectos</div>
         </div>
         <div class="stat-box">
           <div class="stat-num">8+</div>
-          <div class="stat-label">Tecnologías</div>
+          <div class="stat-label" data-i18n="about.stat.tech">Tecnologías</div>
         </div>
         <div class="stat-box">
           <div class="stat-num" id="stat-reviews-count">—</div>
-          <div class="stat-label">Reviews</div>
+          <div class="stat-label" data-i18n="about.stat.reviews">Reviews</div>
         </div>
         <div class="stat-box">
           <div class="stat-num" id="stat-avg-score">—</div>
-          <div class="stat-label">Calificación</div>
+          <div class="stat-label" data-i18n="about.stat.rating">Calificación</div>
         </div>
       </div>
     </div>
@@ -561,7 +593,7 @@
 <section id="reviews" class="reveal">
   <div class="section-meta">
     <span class="section-num">04</span>
-    <span class="section-label">Clientes</span>
+    <span class="section-label" data-i18n="reviews.label">Clientes</span>
     <div class="section-line"></div>
   </div>
   <h2 class="section-title">Reviews &amp; <em>Feedback</em></h2>
@@ -575,17 +607,17 @@
   </div>
 
   <div id="reviews-container">
-    <div class="no-reviews">Aún no hay reseñas. ¡Sé el primero en calificar!</div>
+    <div class="no-reviews" data-i18n="reviews.empty">Aún no hay reseñas. ¡Sé el primero en calificar!</div>
   </div>
 
   <div class="review-form-wrap">
-    <h3 class="form-title">Deja tu reseña</h3>
+    <h3 class="form-title" data-i18n="reviews.form.title">Deja tu reseña</h3>
     <div class="form-group">
-      <label>Tu nombre</label>
-      <input type="text" id="inp-name" placeholder="Ej: Carlos M." maxlength="50" />
+      <label data-i18n="reviews.form.name">Tu nombre</label>
+      <input type="text" id="inp-name" data-i18n-placeholder="reviews.form.name_placeholder" placeholder="Ej: Carlos M." maxlength="50" />
     </div>
     <div class="form-group">
-      <label>Calificación</label>
+      <label data-i18n="reviews.form.rating">Calificación</label>
       <div class="star-rating">
         <input type="radio" name="rating" id="s5" value="5"><label for="s5">★</label>
         <input type="radio" name="rating" id="s4" value="4"><label for="s4">★</label>
@@ -595,20 +627,140 @@
       </div>
     </div>
     <div class="form-group">
-      <label>Comentario</label>
-      <textarea id="inp-comment" rows="4" placeholder="Cuéntanos tu experiencia..." maxlength="300"></textarea>
+      <label data-i18n="reviews.form.comment">Comentario</label>
+      <textarea id="inp-comment" rows="4" data-i18n-placeholder="reviews.form.comment_placeholder" placeholder="Cuéntanos tu experiencia..." maxlength="300"></textarea>
     </div>
-    <button class="btn btn-solid" onclick="submitReview()">Publicar reseña</button>
+    <button class="btn btn-solid" onclick="submitReview()" data-i18n="reviews.form.submit">Publicar reseña</button>
     <div class="form-msg" id="form-msg"></div>
   </div>
 </section>
 
 <footer>
   <div class="footer-logo">AndresD3us</div>
-  <div class="footer-copy">© 2025 AndresD3us · Todos los derechos reservados</div>
+  <div class="footer-copy" data-i18n="footer.copy">© 2025 AndresD3us · Todos los derechos reservados</div>
 </footer>
 
 <script>
+  const i18n = {
+    es: {
+      "nav.skills": "Skills",
+      "nav.projects": "Proyectos",
+      "nav.about": "About",
+      "nav.reviews": "Reviews",
+      "hero.eyebrow": "Desarrollador Web &amp; Fullstack",
+      "hero.tagline": "Construyo experiencias web que van más allá del código. Apasionado por el desarrollo, el diseño y crear cosas que importen.",
+      "hero.cta.projects": "Ver Proyectos",
+      "skills.label": "Tecnologías",
+      "projects.label": "Portafolio",
+      "projects.title.em": "Proyectos",
+      "projects.title.suffix": "recientes",
+      "projects.oticbot.desc": "Bot multifuncional para Discord construido en Python con comandos personalizados, sistema de economía y moderación automatizada.",
+      "projects.distribuidora.desc": "Aplicación de gestión para una distribuidora de gaseosas. Incluye módulo de contabilidad, sistema de pedidos y control de ventas en tiempo real.",
+      "projects.neptune.desc": "Neptune Network es un servidor HCF en Minecraft Bedrock donde soy el dueño y desarrollador principal. El proyecto depende completamente de mí, lo que me ha ayudado a crecer mucho como desarrollador.",
+      "about.label": "Sobre mí",
+      "about.p1": "Soy <strong>AndresD3us</strong>, desarrollador web apasionado por construir cosas reales con código. Llevo tiempo en este mundo y cada proyecto me enseña algo nuevo.",
+      "about.p2": "Me muevo entre el <strong>frontend y el backend</strong>, trabajo con Node.js, Python y PHP. Me gusta que las cosas funcionen bien y se vean mejor.",
+      "about.p3": "Cuando no estoy construyendo, estoy aprendiendo. Siempre hay algo nuevo que explorar — nuevas herramientas, frameworks, ideas.",
+      "about.github": "Ver GitHub",
+      "about.stat.projects": "Proyectos",
+      "about.stat.tech": "Tecnologías",
+      "about.stat.reviews": "Reviews",
+      "about.stat.rating": "Calificación",
+      "reviews.label": "Clientes",
+      "reviews.empty": "Aún no hay reseñas. ¡Sé el primero en calificar!",
+      "reviews.form.title": "Deja tu reseña",
+      "reviews.form.name": "Tu nombre",
+      "reviews.form.name_placeholder": "Ej: Carlos M.",
+      "reviews.form.rating": "Calificación",
+      "reviews.form.comment": "Comentario",
+      "reviews.form.comment_placeholder": "Cuéntanos tu experiencia...",
+      "reviews.form.submit": "Publicar reseña",
+      "reviews.success": "¡Reseña publicada con éxito!",
+      "reviews.error.fields": "Por favor completa todos los campos y selecciona una calificación.",
+      "reviews.error.send": "Error al enviar la reseña. Intenta de nuevo.",
+      "reviews.count_singular": "reseña",
+      "reviews.count_plural": "reseñas",
+      "footer.copy": "© 2025 AndresD3us · Todos los derechos reservados"
+    },
+    en: {
+      "nav.skills": "Skills",
+      "nav.projects": "Projects",
+      "nav.about": "About",
+      "nav.reviews": "Reviews",
+      "hero.eyebrow": "Web &amp; Fullstack Developer",
+      "hero.tagline": "I build web experiences that go beyond the code. Passionate about development, design, and creating things that matter.",
+      "hero.cta.projects": "View Projects",
+      "skills.label": "Technologies",
+      "projects.label": "Portfolio",
+      "projects.title.em": "Projects",
+      "projects.title.suffix": "recent",
+      "projects.oticbot.desc": "Multifunctional Discord bot built in Python with custom commands, economy system and automated moderation.",
+      "projects.distribuidora.desc": "Management app for a beverage distributor. Includes accounting module, order system and real-time sales tracking.",
+      "projects.neptune.desc": "Neptune Network is an HCF server on Minecraft Bedrock where I'm the owner and lead developer. The project relies entirely on me, which has helped me grow a lot as a developer.",
+      "about.label": "About me",
+      "about.p1": "I'm <strong>AndresD3us</strong>, a web developer passionate about building real things with code. I've been in this world for a while and every project teaches me something new.",
+      "about.p2": "I work across <strong>frontend and backend</strong>, with Node.js, Python and PHP. I like things to work well and look even better.",
+      "about.p3": "When I'm not building, I'm learning. There's always something new to explore — new tools, frameworks, ideas.",
+      "about.github": "View GitHub",
+      "about.stat.projects": "Projects",
+      "about.stat.tech": "Technologies",
+      "about.stat.reviews": "Reviews",
+      "about.stat.rating": "Rating",
+      "reviews.label": "Clients",
+      "reviews.empty": "No reviews yet. Be the first to rate!",
+      "reviews.form.title": "Leave your review",
+      "reviews.form.name": "Your name",
+      "reviews.form.name_placeholder": "e.g. Carlos M.",
+      "reviews.form.rating": "Rating",
+      "reviews.form.comment": "Comment",
+      "reviews.form.comment_placeholder": "Tell us about your experience...",
+      "reviews.form.submit": "Post review",
+      "reviews.success": "Review posted successfully!",
+      "reviews.error.fields": "Please fill in all fields and select a rating.",
+      "reviews.error.send": "Failed to submit review. Please try again.",
+      "reviews.count_singular": "review",
+      "reviews.count_plural": "reviews",
+      "footer.copy": "© 2025 AndresD3us · All rights reserved"
+    }
+  };
+
+  const userLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase().startsWith('es') ? 'es' : 'en';
+  let currentLang = localStorage.getItem('lang') || userLang;
+
+  function t(key) {
+    return i18n[currentLang][key] || i18n['es'][key] || key;
+  }
+
+  function applyLang() {
+    document.documentElement.lang = currentLang;
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      const val = t(key);
+      if (el.tagName === 'A' && el.querySelector('svg')) {
+        const svg = el.querySelector('svg').outerHTML;
+        el.innerHTML = svg + ' ' + val;
+      } else {
+        el.innerHTML = val;
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      el.placeholder = t(el.dataset.i18nPlaceholder);
+    });
+
+    document.getElementById('btn-es').classList.toggle('active', currentLang === 'es');
+    document.getElementById('btn-en').classList.toggle('active', currentLang === 'en');
+
+    renderReviews();
+  }
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    applyLang();
+  }
+
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 40);
@@ -627,7 +779,8 @@
   }
 
   function formatDate(iso) {
-    return new Date(iso).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+    const locale = currentLang === 'es' ? 'es-ES' : 'en-US';
+    return new Date(iso).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
   }
 
   async function loadReviews() {
@@ -647,7 +800,7 @@
     statCount.textContent = allReviews.length;
 
     if (allReviews.length === 0) {
-      container.innerHTML = '<div class="no-reviews">Aún no hay reseñas. ¡Sé el primero en calificar!</div>';
+      container.innerHTML = `<div class="no-reviews">${t('reviews.empty')}</div>`;
       avgDisplay.style.display = 'none';
       statAvg.textContent = '—';
       return;
@@ -655,10 +808,11 @@
 
     const avg = allReviews.reduce((a, r) => a + r.rating, 0) / allReviews.length;
     const avgRounded = Math.round(avg * 10) / 10;
+    const countWord = allReviews.length === 1 ? t('reviews.count_singular') : t('reviews.count_plural');
 
     document.getElementById('avg-num').textContent = avgRounded.toFixed(1);
     document.getElementById('avg-stars').textContent = starsHTML(Math.round(avg));
-    document.getElementById('avg-count').textContent = `${allReviews.length} reseña${allReviews.length !== 1 ? 's' : ''}`;
+    document.getElementById('avg-count').textContent = `${allReviews.length} ${countWord}`;
     avgDisplay.style.display = 'flex';
     statAvg.textContent = avgRounded.toFixed(1);
 
@@ -683,7 +837,7 @@
     const ratingEl = document.querySelector('input[name="rating"]:checked');
 
     if (!name || !comment || !ratingEl) {
-      showMsg('Por favor completa todos los campos y selecciona una calificación.', 'error');
+      showMsg(t('reviews.error.fields'), 'error');
       return;
     }
 
@@ -694,13 +848,13 @@
         body: JSON.stringify({ name, rating: parseInt(ratingEl.value), comment })
       });
       if (!res.ok) throw new Error();
-      showMsg('¡Reseña publicada con éxito!', 'success');
+      showMsg(t('reviews.success'), 'success');
       document.getElementById('inp-name').value = '';
       document.getElementById('inp-comment').value = '';
       if (ratingEl) ratingEl.checked = false;
       loadReviews();
     } catch {
-      showMsg('Error al enviar la reseña. Intenta de nuevo.', 'error');
+      showMsg(t('reviews.error.send'), 'error');
     }
   }
 
@@ -712,6 +866,7 @@
     setTimeout(() => msg.style.display = 'none', 4000);
   }
 
+  applyLang();
   loadReviews();
 </script>
 </body>
