@@ -81,168 +81,213 @@ const i18n = {
   }
 };
 
-const userLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase().startsWith('es') ? 'es' : 'en';
-let currentLang = localStorage.getItem('lang') || userLang;
+const userLang = (navigator.language || navigator.userLanguage || "en")
+  .toLowerCase()
+  .startsWith("es") ? "es" : "en";
+
+let currentLang = localStorage.getItem("lang") || userLang;
+let allReviews = [];
 
 function t(key) {
-  return i18n[currentLang][key] || i18n['es'][key] || key;
+  return i18n[currentLang][key] || i18n["es"][key] || key;
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem("lang", lang);
+  applyLang();
 }
 
 function applyLang() {
   document.documentElement.lang = currentLang;
 
-  document.querySelectorAll('[data-i18n]').forEach(el => {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.dataset.i18n;
     const val = t(key);
-    if (el.tagName === 'A' && el.querySelector('svg')) {
-      const svg = el.querySelector('svg').outerHTML;
-      el.innerHTML = svg + ' ' + val;
+    if (el.tagName === "A" && el.querySelector("svg")) {
+      const svg = el.querySelector("svg").outerHTML;
+      el.innerHTML = svg + " " + val;
     } else {
       el.innerHTML = val;
     }
   });
 
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
     el.placeholder = t(el.dataset.i18nPlaceholder);
   });
 
-  document.getElementById('btn-es').classList.toggle('active', currentLang === 'es');
-  document.getElementById('btn-en').classList.toggle('active', currentLang === 'en');
+  document.getElementById("btn-es").classList.toggle("active", currentLang === "es");
+  document.getElementById("btn-en").classList.toggle("active", currentLang === "en");
 
   renderReviews();
 }
 
-function setLang(lang) {
-  currentLang = lang;
-  localStorage.setItem('lang', lang);
-  applyLang();
-}
-
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 40);
-});
-
-const hamburger = document.getElementById('nav-hamburger');
-const navLinks = document.getElementById('nav-links');
-
-hamburger.addEventListener('click', () => {
-  const isOpen = navLinks.classList.toggle('open');
-  hamburger.classList.toggle('open', isOpen);
-  document.body.style.overflow = isOpen ? 'hidden' : '';
-});
-
-function closeMenu() {
-  navLinks.classList.remove('open');
-  hamburger.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-document.addEventListener('click', (e) => {
-  if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-    closeMenu();
-  }
-});
-
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.08 });
-reveals.forEach(el => observer.observe(el));
-
-let allReviews = [];
-
 function starsHTML(n) {
-  return '★'.repeat(n) + '☆'.repeat(5 - n);
+  return "★".repeat(n) + "☆".repeat(5 - n);
 }
 
-function formatDate(iso) {
-  const locale = currentLang === 'es' ? 'es-ES' : 'en-US';
-  return new Date(iso).toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
+function formatDate(timestamp) {
+  const locale = currentLang === "es" ? "es-ES" : "en-US";
+  return new Date(timestamp).toLocaleDateString(locale, {
+    year: "numeric",
+    month: "short",
+    day: "numeric"
+  });
 }
 
-async function loadReviews() {
-  try {
-    const res = await fetch('/api/reviews');
-    allReviews = await res.json();
-    renderReviews();
-  } catch (e) { console.error(e); }
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function createReviewCard(r) {
+  const card = document.createElement("div");
+  card.className = "review-card";
+
+  const stars = document.createElement("div");
+  stars.className = "review-stars";
+  stars.textContent = starsHTML(r.rating);
+
+  const comment = document.createElement("p");
+  comment.className = "review-comment";
+  comment.textContent = `"${r.comment}"`;
+
+  const author = document.createElement("div");
+  author.className = "review-author";
+  author.textContent = r.name;
+
+  const date = document.createElement("div");
+  date.className = "review-date";
+  date.textContent = formatDate(r.date);
+
+  card.appendChild(stars);
+  card.appendChild(comment);
+  card.appendChild(author);
+  card.appendChild(date);
+
+  return card;
 }
 
 function renderReviews() {
-  const container = document.getElementById('reviews-container');
-  const avgDisplay = document.getElementById('avg-display');
-  const statCount = document.getElementById('stat-reviews-count');
-  const statAvg = document.getElementById('stat-avg-score');
+  const container = document.getElementById("reviews-container");
+  const avgDisplay = document.getElementById("avg-display");
+  const statCount = document.getElementById("stat-reviews-count");
+  const statAvg = document.getElementById("stat-avg-score");
 
   statCount.textContent = allReviews.length;
 
   if (allReviews.length === 0) {
-    container.innerHTML = `<div class="no-reviews">${t('reviews.empty')}</div>`;
-    avgDisplay.style.display = 'none';
-    statAvg.textContent = '—';
+    container.innerHTML = `<div class="no-reviews">${t("reviews.empty")}</div>`;
+    avgDisplay.style.display = "none";
+    statAvg.textContent = "—";
     return;
   }
 
   const avg = allReviews.reduce((a, r) => a + r.rating, 0) / allReviews.length;
   const avgRounded = Math.round(avg * 10) / 10;
-  const countWord = allReviews.length === 1 ? t('reviews.count_singular') : t('reviews.count_plural');
+  const countWord = allReviews.length === 1
+    ? t("reviews.count_singular")
+    : t("reviews.count_plural");
 
-  document.getElementById('avg-num').textContent = avgRounded.toFixed(1);
-  document.getElementById('avg-stars').textContent = starsHTML(Math.round(avg));
-  document.getElementById('avg-count').textContent = `${allReviews.length} ${countWord}`;
-  avgDisplay.style.display = 'flex';
+  document.getElementById("avg-num").textContent = avgRounded.toFixed(1);
+  document.getElementById("avg-stars").textContent = starsHTML(Math.round(avg));
+  document.getElementById("avg-count").textContent = `${allReviews.length} ${countWord}`;
+  avgDisplay.style.display = "flex";
   statAvg.textContent = avgRounded.toFixed(1);
 
-  const grid = document.createElement('div');
-  grid.className = 'reviews-grid';
-  allReviews.forEach(r => {
-    grid.innerHTML += `
-      <div class="review-card">
-        <div class="review-stars">${starsHTML(r.rating)}</div>
-        <p class="review-comment">"${r.comment}"</p>
-        <div class="review-author">${r.name}</div>
-        <div class="review-date">${formatDate(r.date)}</div>
-      </div>`;
-  });
-  container.innerHTML = '';
+  const grid = document.createElement("div");
+  grid.className = "reviews-grid";
+  allReviews.forEach(r => grid.appendChild(createReviewCard(r)));
+
+  container.innerHTML = "";
   container.appendChild(grid);
 }
 
+async function loadReviews() {
+  try {
+    const res = await fetch("/api/reviews");
+    allReviews = await res.json();
+    renderReviews();
+  } catch (e) {
+    console.error("Error cargando reseñas:", e);
+  }
+}
+
 async function submitReview() {
-  const name = document.getElementById('inp-name').value.trim();
-  const comment = document.getElementById('inp-comment').value.trim();
-  const ratingEl = document.querySelector('input[name="rating"]:checked');
+  const name = document.getElementById("inp-name").value.trim();
+  const comment = document.getElementById("inp-comment").value.trim();
+  const ratingEl = document.querySelector("input[name='rating']:checked");
 
   if (!name || !comment || !ratingEl) {
-    showMsg(t('reviews.error.fields'), 'error');
+    showMsg(t("reviews.error.fields"), "error");
     return;
   }
 
   try {
-    const res = await fetch('/api/reviews', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, rating: parseInt(ratingEl.value), comment })
     });
+
     if (!res.ok) throw new Error();
-    showMsg(t('reviews.success'), 'success');
-    document.getElementById('inp-name').value = '';
-    document.getElementById('inp-comment').value = '';
-    if (ratingEl) ratingEl.checked = false;
+
+    showMsg(t("reviews.success"), "success");
+    document.getElementById("inp-name").value = "";
+    document.getElementById("inp-comment").value = "";
+    ratingEl.checked = false;
     loadReviews();
   } catch {
-    showMsg(t('reviews.error.send'), 'error');
+    showMsg(t("reviews.error.send"), "error");
   }
 }
 
 function showMsg(text, type) {
-  const msg = document.getElementById('form-msg');
+  const msg = document.getElementById("form-msg");
   msg.textContent = text;
-  msg.className = 'form-msg ' + type;
-  msg.style.display = 'block';
-  setTimeout(() => msg.style.display = 'none', 4000);
+  msg.className = "form-msg " + type;
+  msg.style.display = "block";
+  setTimeout(() => { msg.style.display = "none"; }, 4000);
 }
+
+const navbar = document.getElementById("navbar");
+window.addEventListener("scroll", () => {
+  navbar.classList.toggle("scrolled", window.scrollY > 40);
+});
+
+const hamburger = document.getElementById("nav-hamburger");
+const navLinks = document.getElementById("nav-links");
+
+hamburger.addEventListener("click", () => {
+  const isOpen = navLinks.classList.toggle("open");
+  hamburger.classList.toggle("open", isOpen);
+  document.body.style.overflow = isOpen ? "hidden" : "";
+});
+
+function closeMenu() {
+  navLinks.classList.remove("open");
+  hamburger.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+document.addEventListener("click", e => {
+  if (
+    navLinks.classList.contains("open") &&
+    !navLinks.contains(e.target) &&
+    !hamburger.contains(e.target)
+  ) {
+    closeMenu();
+  }
+});
+
+const reveals = document.querySelectorAll(".reveal");
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add("visible");
+  });
+}, { threshold: 0.08 });
+reveals.forEach(el => observer.observe(el));
 
 applyLang();
 loadReviews();
