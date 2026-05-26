@@ -37,7 +37,7 @@ const i18n = {
     "reviews.error.send": "Error al enviar la reseña. Intenta de nuevo.",
     "reviews.count_singular": "reseña",
     "reviews.count_plural": "reseñas",
-    "footer.copy": "© 2025 AndresD3us · Todos los derechos reservados"
+    "footer.copy": "© 2026 AndresD3us · Todos los derechos reservados"
   },
   en: {
     "nav.skills": "Skills",
@@ -77,7 +77,7 @@ const i18n = {
     "reviews.error.send": "Failed to submit review. Please try again.",
     "reviews.count_singular": "review",
     "reviews.count_plural": "reviews",
-    "footer.copy": "© 2025 AndresD3us · All rights reserved"
+    "footer.copy": "© 2026 AndresD3us · All rights reserved"
   }
 };
 
