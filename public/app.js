@@ -207,10 +207,19 @@ function renderReviews() {
 async function loadReviews() {
   try {
     const res = await fetch("/api/reviews");
-    allReviews = await res.json();
+    if (!res.ok) {
+      console.error("Error cargando reseñas: HTTP", res.status);
+      allReviews = [];
+      renderReviews();
+      return;
+    }
+    const data = await res.json();
+    allReviews = Array.isArray(data) ? data : [];
     renderReviews();
   } catch (e) {
     console.error("Error cargando reseñas:", e);
+    allReviews = [];
+    renderReviews();
   }
 }
 

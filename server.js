@@ -59,7 +59,9 @@ app.get("/api/reviews", async (req, res) => {
     const reviews = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     res.json(reviews);
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener las reseñas." });
+    console.error("Error al obtener las reseñas:", error);
+    // Return empty array so the frontend doesn't crash with .reduce()
+    res.json([]);
   }
 });
 
