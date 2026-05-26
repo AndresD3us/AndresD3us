@@ -269,23 +269,15 @@ const hamburger = document.getElementById("nav-hamburger");
 const navLinks = document.getElementById("nav-links");
 
 hamburger.addEventListener("click", () => {
-  const isOpen = !navLinks.classList.contains("open");
+  const isOpen = navLinks.classList.toggle("open");
   hamburger.classList.toggle("open", isOpen);
   document.body.style.overflow = isOpen ? "hidden" : "";
-  if (isOpen) {
-    navLinks.classList.add("open");
-    requestAnimationFrame(() => navLinks.style.opacity = "1");
-  } else {
-    navLinks.style.opacity = "0";
-    setTimeout(() => navLinks.classList.remove("open"), 200);
-  }
 });
 
 function closeMenu() {
+  navLinks.classList.remove("open");
   hamburger.classList.remove("open");
   document.body.style.overflow = "";
-  navLinks.style.opacity = "0";
-  setTimeout(() => navLinks.classList.remove("open"), 200);
 }
 
 document.addEventListener("click", e => {
