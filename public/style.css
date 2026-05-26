@@ -387,6 +387,9 @@ footer {
 }
 .footer-logo { font-family: var(--mono); font-size: 0.85rem; color: var(--ink); }
 .footer-copy { font-family: var(--mono); font-size: 0.7rem; opacity: 0.5; }
+.footer-socials { display: flex; gap: 1.2rem; align-items: center; }
+.footer-social-link { display: flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.75rem; color: var(--ink); opacity: 0.6; text-decoration: none; transition: opacity 0.2s; }
+.footer-social-link:hover { opacity: 1; }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }

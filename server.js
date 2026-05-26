@@ -60,7 +60,6 @@ app.get("/api/reviews", async (req, res) => {
     res.json(reviews);
   } catch (error) {
     console.error("Error al obtener las reseñas:", error);
-    // Return empty array so the frontend doesn't crash with .reduce()
     res.json([]);
   }
 });
