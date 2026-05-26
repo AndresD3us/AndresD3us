@@ -13,7 +13,7 @@ const i18n = {
     "projects.title.suffix": "recientes",
     "projects.oticbot.desc": "Bot multifuncional para Discord construido en Python con comandos personalizados, sistema de economía y moderación automatizada.",
     "projects.distribuidora.desc": "Aplicación de gestión para una distribuidora de gaseosas. Incluye módulo de contabilidad, sistema de pedidos y control de ventas en tiempo real.",
-    "projects.neptune.desc": "Neptune Network es un servidor HCF en Minecraft Bedrock donde soy el dueño y desarrollador principal. El proyecto depende completamente de mí, lo que me ha ayudado a crecer mucho como desarrollador.",
+    "projects.neptune.desc": "Neptune Network es un servidor HCF en Minecraft Bedrock, donde fui desarrollador principal. El proyecto depende completamente de mí, lo que me ha ayudado a crecer mucho como desarrollador.",
     "about.label": "Sobre mí",
     "about.p1": "Soy <strong>AndresD3us</strong>, desarrollador web apasionado por construir cosas reales con código. Llevo tiempo en este mundo y cada proyecto me enseña algo nuevo.",
     "about.p2": "Me muevo entre el <strong>frontend y el backend</strong>, trabajo con Node.js, Python y PHP. Me gusta que las cosas funcionen bien y se vean mejor.",
