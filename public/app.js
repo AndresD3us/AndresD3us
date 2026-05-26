@@ -37,7 +37,7 @@ const i18n = {
     "reviews.error.send": "Error al enviar la reseña. Intenta de nuevo.",
     "reviews.count_singular": "reseña",
     "reviews.count_plural": "reseñas",
-    "footer.copy": "© 2026 AndresD3us · Todos los derechos reservados"
+    "footer.copy": "© 2025 AndresD3us · Todos los derechos reservados"
   },
   en: {
     "nav.skills": "Skills",
@@ -77,7 +77,7 @@ const i18n = {
     "reviews.error.send": "Failed to submit review. Please try again.",
     "reviews.count_singular": "review",
     "reviews.count_plural": "reviews",
-    "footer.copy": "© 2026 AndresD3us · All rights reserved"
+    "footer.copy": "© 2025 AndresD3us · All rights reserved"
   }
 };
 
@@ -269,15 +269,23 @@ const hamburger = document.getElementById("nav-hamburger");
 const navLinks = document.getElementById("nav-links");
 
 hamburger.addEventListener("click", () => {
-  const isOpen = navLinks.classList.toggle("open");
+  const isOpen = !navLinks.classList.contains("open");
   hamburger.classList.toggle("open", isOpen);
   document.body.style.overflow = isOpen ? "hidden" : "";
+  if (isOpen) {
+    navLinks.classList.add("open");
+    requestAnimationFrame(() => navLinks.style.opacity = "1");
+  } else {
+    navLinks.style.opacity = "0";
+    setTimeout(() => navLinks.classList.remove("open"), 200);
+  }
 });
 
 function closeMenu() {
-  navLinks.classList.remove("open");
   hamburger.classList.remove("open");
   document.body.style.overflow = "";
+  navLinks.style.opacity = "0";
+  setTimeout(() => navLinks.classList.remove("open"), 200);
 }
 
 document.addEventListener("click", e => {
