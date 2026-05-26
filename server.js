@@ -28,7 +28,6 @@ function rateLimit(req, res, next) {
   const now = Date.now();
   const windowMs = 15 * 60 * 1000;
   const maxRequests = 5;
-
   const entry = reviewLimits.get(ip) || { count: 0, start: now };
 
   if (now - entry.start > windowMs) {
@@ -86,14 +85,13 @@ app.post("/api/reviews", rateLimit, async (req, res) => {
     };
 
     const doc = await db.collection("reviews").add(entry);
-
     res.status(201).json({ id: doc.id, ...entry });
   } catch (error) {
     res.status(500).json({ error: "Error al guardar la reseña." });
   }
 });
 
-app.get("/", (req, res) => {
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 

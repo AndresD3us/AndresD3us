@@ -2,10 +2,15 @@
   "name": "andres-portfolio",
   "version": "1.0.0",
   "description": "Portfolio de AndresD3us",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
+    "express": "^5.2.1",
     "firebase-admin": "^13.4.0"
   }
 }
