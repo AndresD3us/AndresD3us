@@ -28,7 +28,6 @@ andres = {
 - 🎓 Estudiante de **Ingeniería en Sistemas**
 - 💻 Me encanta la **programación** y el **desarrollo web**
 - 🌱 Siempre aprendiendo cosas nuevas
-- ⚡ Fun fact: Antes de dormir pienso en cómo optimizar mi código
 
 ---
 
