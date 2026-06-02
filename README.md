@@ -20,7 +20,7 @@ andres = {
     "semestre"  : "Primer año",
     "pasión"    : "Programación & Desarrollo Web",
     "estado"    : "aprendiendo.exe en ejecución... 🔄",
-    "fun_fact"  : "Creo que todo problema tiene solución con el código correcto 💡"
+    "regla"     : "primero aprende el juego, luego cambia las reglas 💡",
     "mi web"    : "https://andresd3us.vercel.app/"
 }
 ```
