@@ -21,7 +21,7 @@ andres = {
     "pasión"    : "Programación & Desarrollo Web",
     "estado"    : "aprendiendo.exe en ejecución... 🔄",
     "regla"     : "primero aprende el juego, luego cambia las reglas 💡",
-    "mi web"    : "https://andresd3us.vercel.app/"
+    "mi web"    : "https://andresdeus.xyz/"
 }
 ```
 
