@@ -418,7 +418,7 @@ footer {
 
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
   .skill-card:nth-child(2n) { border-right: none; }
-  .skill-card:nth-child(4n) { border-right: 1px solid var(--line); }
+  .skill-card:nth-last-child(-n + 2) { border-bottom: none; }
 
   .projects-grid { grid-template-columns: 1fr; }
   .project-card { border-right: none; border-bottom: 1px solid var(--line); }
